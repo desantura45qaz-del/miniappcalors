@@ -1,0 +1,824 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ru"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Калькулятор калорий&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://telegram.org/js/telegram-web-app.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>:root { color-scheme: light dark; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-bg-color, #ffffff);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--tg-theme-text-color, #000000);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.app {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 94%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 420px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-secondary-bg-color, #f3f3f3);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 14px 14px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 8px 24px rgba(0,0,0,0.12);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>h1 {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 0 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.subtitle {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 0 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.7;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.subtitle.small { margin-top: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.user {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.8;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.tabs {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 6px 0 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.tab {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(0,0,0,0.12);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.tab.active {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-button-color, #2a9df4);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--tg-theme-button-text-color, #ffffff);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.screen {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.screen.active {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.grid {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: 1fr 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.field {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>label {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.9;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input, select {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 8px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(0,0,0,0.12);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-bg-color, #ffffff);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: inherit;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input::placeholder { opacity: 0.5; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.result {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(0,0,0,0.03);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.4;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.result strong { font-size: 14px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.error {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #ff4b4b;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.hint {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.7;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>button.calc-btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-button-color, #2a9df4);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--tg-theme-button-text-color, #ffffff);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>button.calc-btn.secondary {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: inherit;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(0,0,0,0.12);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.profile-actions {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: flex-end;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.link-btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: underline;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.7;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.recs-note {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.8;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.lock {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opacity: 0.8;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(0,0,0,0.03);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.story-preview {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-height: 320px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>object-fit: cover;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="app"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Калькулятор калорий&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="subtitle"&gt;Мини-приложение Devickaya&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="user" id="user-info"&gt;Определяю пользователя…&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tabs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab active" data-screen="daily"&gt;Суточная норма&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab" data-screen="meal"&gt;Блюдо&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab" data-screen="recs"&gt;Рекомендации&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- ЭКРАН 1: суточная норма --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="screen active" id="screen-daily"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;label for="user-type"&gt;Кто вы?&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;select id="user-type"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="subscriber" selected&gt;Просто подписчик&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="patient"&gt;Пациент&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;small style="opacity:0.6;font-size:11px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Для пациентов все рекомендации используются в рамках вашей схемы лечения.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/small&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label for="gender"&gt;Пол&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;select id="gender"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="female"&gt;Женский&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="male"&gt;Мужской&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label for="age"&gt;Возраст&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="age" type="number" min="10" max="100" placeholder="лет" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label for="height"&gt;Рост&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="height" type="number" min="120" max="230" placeholder="см" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label for="weight"&gt;Вес&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="weight" type="number" min="30" max="250" step="0.1" placeholder="кг" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;label for="activity"&gt;Активность&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;select id="activity"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="1.2"&gt;Минимальная (сидячая работа)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="1.375"&gt;Лёгкая (1–3 тренировки/нед)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="1.55"&gt;Средняя (3–5 тренировок/нед)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="1.725"&gt;Высокая (6–7 тренировок/нед)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="1.9"&gt;Очень высокая (спорт, тяжёлый труд)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;label for="goal"&gt;Цель&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;select id="goal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="lose"&gt;Снижение веса&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="maintain" selected&gt;Поддержание веса&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="gain"&gt;Набор веса&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;label for="intensity"&gt;Интенсивность цели&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;select id="intensity"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="10"&gt;Мягко (≈10%)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="15" selected&gt;Стандартно (≈15%)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="20"&gt;Интенсивно (≈20%)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;small style="opacity:0.6;font-size:11px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Для снижения это дефицит, для набора — профицит.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/small&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="profile-actions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="link-btn" id="reset-profile"&gt;Сбросить сохранённый профиль&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="calc-btn" id="calc-btn"&gt;Рассчитать калории&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="error" class="error" style="display:none;"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="result" class="result" style="display:none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Ваши расчёты:&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="result-text"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="hint"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Это приблизительные значения и не заменяют очную консультацию врача.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- ЭКРАН 2: блюдо --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="screen" id="screen-meal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="subtitle small"&gt;Быстрый расчёт по ккал на 100 г и весу порции.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;label for="meal-name"&gt;Блюдо&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;input id="meal-name" type="text" placeholder="Например: овсянка на молоке" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label for="meal-kcal100"&gt;Ккал на 100 г&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="meal-kcal100" type="number" min="10" max="1200" placeholder="например, 120" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label for="meal-weight"&gt;Вес порции, г&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="meal-weight" type="number" min="10" max="2000" placeholder="например, 250" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="calc-btn secondary" id="meal-btn"&gt;Рассчитать блюдо&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="meal-error" class="error" style="display:none;"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="meal-result" class="result" style="display:none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Калорийность блюда:&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="meal-result-text"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- ЭКРАН 3: рекомендации для пациента --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="screen" id="screen-recs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="subtitle small"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Рекомендации по воде, шагам и сну на основе вашего профиля и суточной калорийности.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="recs-locked" class="lock" style="display:none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Эта секция доступна только &lt;b&gt;пациентам с активным тарифом&lt;/b&gt; Devickaya.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Напишите мне в бот, чтобы подключить программу.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="recs-content" style="display:none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="result"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;strong&gt;Ваши ориентиры на день:&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div id="recs-text"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="recs-note"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Важно: это общие рекомендации и они всегда адаптируются под ваш диагноз,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>анализы и схему лечения. Окончательные решения — вместе с врачом.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="calc-btn secondary" id="story-btn"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Сгенерировать карточку для сторис</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;img id="story-preview" class="story-preview" style="display:none;" alt="Карточка для сторис" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const tg = window.Telegram?.WebApp;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (tg) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.ready();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.expand();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- пользователь + тариф ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const userInfoEl = document.getElementById("user-info");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const user = tg?.initDataUnsafe?.user;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (user) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const name = user.username</p>
+<p class="p1"><span class="Apple-converted-space">        </span>? "@" + user.username</p>
+<p class="p1"><span class="Apple-converted-space">        </span>: [user.first_name, user.last_name].filter(Boolean).join(" ");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>userInfoEl.textContent = "Вы зашли как: " + name;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>userInfoEl.textContent = "Пользователь не определён (открыто вне Telegram).";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const urlParams = new URLSearchParams(window.location.search);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const hasSubscription =</p>
+<p class="p1"><span class="Apple-converted-space">      </span>urlParams.get("sub") === "1" ||</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg?.initDataUnsafe?.start_param === "patient_pro";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (hasSubscription) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>userInfoEl.textContent += " • тариф активен";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- вкладки ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const tabs = document.querySelectorAll(".tab");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const screens = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>daily: document.getElementById("screen-daily"),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>meal: document.getElementById("screen-meal"),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>recs: document.getElementById("screen-recs")</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function switchScreen(id) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tabs.forEach(t =&gt; t.classList.toggle("active", t.dataset.screen === id));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Object.entries(screens).forEach(([key, el]) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>el.classList.toggle("active", key === id);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>tabs.forEach(tab =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tab.addEventListener("click", () =&gt; switchScreen(tab.dataset.screen));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- элементы профиля ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const userTypeEl <span class="Apple-converted-space">  </span>= document.getElementById("user-type");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const genderEl <span class="Apple-converted-space">    </span>= document.getElementById("gender");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const ageEl<span class="Apple-converted-space">        </span>= document.getElementById("age");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const heightEl <span class="Apple-converted-space">    </span>= document.getElementById("height");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const weightEl <span class="Apple-converted-space">    </span>= document.getElementById("weight");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const activityEl <span class="Apple-converted-space">  </span>= document.getElementById("activity");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const goalEl <span class="Apple-converted-space">      </span>= document.getElementById("goal");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const intensityEl<span class="Apple-converted-space">  </span>= document.getElementById("intensity");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const resetProfileBtn = document.getElementById("reset-profile");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const calcBtn<span class="Apple-converted-space">      </span>= document.getElementById("calc-btn");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const errorEl<span class="Apple-converted-space">      </span>= document.getElementById("error");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const resultEl <span class="Apple-converted-space">    </span>= document.getElementById("result");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const resultTextEl = document.getElementById("result-text");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const mealNameEl <span class="Apple-converted-space">  </span>= document.getElementById("meal-name");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const mealKcal100El= document.getElementById("meal-kcal100");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const mealWeightEl = document.getElementById("meal-weight");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const mealBtn<span class="Apple-converted-space">      </span>= document.getElementById("meal-btn");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const mealErrorEl<span class="Apple-converted-space">  </span>= document.getElementById("meal-error");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const mealResultEl = document.getElementById("meal-result");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const mealResultTextEl = document.getElementById("meal-result-text");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const recsLockedEl <span class="Apple-converted-space">  </span>= document.getElementById("recs-locked");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const recsContentEl<span class="Apple-converted-space">  </span>= document.getElementById("recs-content");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const recsTextEl <span class="Apple-converted-space">    </span>= document.getElementById("recs-text");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const storyBtn <span class="Apple-converted-space">      </span>= document.getElementById("story-btn");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const storyPreview <span class="Apple-converted-space">  </span>= document.getElementById("story-preview");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function validateNumber(input, min, max) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const v = Number(String(input.value).replace(",", "."));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!v || isNaN(v) || v &lt; min || v &gt; max) return null;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return v;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- profile localStorage ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const PROFILE_KEY = "devickaya_calorie_profile_v2";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function saveProfile(profile) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>catch (e) { console.warn("Cannot save profile", e); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function loadProfile() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const raw = localStorage.getItem(PROFILE_KEY);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (!raw) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const p = JSON.parse(raw);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.userType) userTypeEl.value = p.userType;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.gender) genderEl.value = p.gender;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.age) ageEl.value = p.age;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.height) heightEl.value = p.height;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.weight) weightEl.value = p.weight;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.activity) activityEl.value = p.activity;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.goal) goalEl.value = p.goal;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (p.intensity) intensityEl.value = p.intensity;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>userInfoEl.textContent += " • профиль загружен";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>console.warn("Cannot load profile", e);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function clearProfile() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try { localStorage.removeItem(PROFILE_KEY); } catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>loadProfile();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>resetProfileBtn.addEventListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>clearProfile();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ageEl.value = "";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>heightEl.value = "";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>weightEl.value = "";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!userInfoEl.textContent.includes("профиль")) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>userInfoEl.textContent = userInfoEl.textContent.replace(" • профиль загружен", "");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- MainButton общая логика ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let mainAction = null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (tg) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.onClick(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (typeof mainAction === "function") mainAction();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- расчёт суточной нормы ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let lastDailyData = null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let lastRecsData<span class="Apple-converted-space">  </span>= null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function calcDaily() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>errorEl.style.display = "none";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>resultEl.style.display = "none";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const userType<span class="Apple-converted-space">  </span>= userTypeEl.value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const gender<span class="Apple-converted-space">    </span>= genderEl.value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const age <span class="Apple-converted-space">      </span>= validateNumber(ageEl, 10, 100);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const height<span class="Apple-converted-space">    </span>= validateNumber(heightEl, 120, 230);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const weight<span class="Apple-converted-space">    </span>= validateNumber(weightEl, 30, 250);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const activity<span class="Apple-converted-space">  </span>= Number(activityEl.value);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const goal<span class="Apple-converted-space">      </span>= goalEl.value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const intensity = Number(intensityEl.value);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!age || !height || !weight) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>errorEl.textContent = "Пожалуйста, заполните возраст, рост и вес корректно.";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>errorEl.style.display = "block";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>let bmr;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (gender === "male") {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>bmr = 10 * weight + 6.25 * height - 5 * age + 5;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>bmr = 10 * weight + 6.25 * height - 5 * age - 161;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const maintenance = bmr * activity;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let target = maintenance;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let intensitySign = 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (goal === "lose") intensitySign = -1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>else if (goal === "gain") intensitySign = 1;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (intensitySign !== 0) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>target = maintenance * (1 + intensitySign * (intensity / 100));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const roundedMaintenance = Math.round(maintenance);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const roundedTarget<span class="Apple-converted-space">      </span>= Math.round(target);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const protein = Math.round((target * 0.3) / 4);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const fats<span class="Apple-converted-space">    </span>= Math.round((target * 0.3) / 9);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const carbs <span class="Apple-converted-space">  </span>= Math.round((target * 0.4) / 4);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const breakfast = Math.round(target * 0.25);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const lunch <span class="Apple-converted-space">    </span>= Math.round(target * 0.35);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const dinner<span class="Apple-converted-space">    </span>= Math.round(target * 0.30);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const snacks<span class="Apple-converted-space">    </span>= Math.round(target * 0.10);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const lines = [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Тип: ${userType === "patient" ? "пациент" : "подписчик"}${hasSubscription &amp;&amp; userType === "patient" ? " (тариф активен)" : ""}`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Базовый обмен (BMR): ~ ${Math.round(bmr)} ккал/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Поддержание веса: ~ ${roundedMaintenance} ккал/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>goal === "maintain"</p>
+<p class="p1"><span class="Apple-converted-space">          </span>? `Рекомендуемая калорийность: ~ ${roundedTarget} ккал/день (поддержание)`</p>
+<p class="p1"><span class="Apple-converted-space">          </span>: `Рекомендуемая калорийность: ~ ${roundedTarget} ккал/день (${goal === "lose" ? "дефицит" : "профицит"} ${intensity}%)`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>"",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Ориентировочные макросы:`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Белки: ~ ${protein} г/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Жиры: ~ ${fats} г/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Углеводы: ~ ${carbs} г/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>"",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Примерная разбивка по приёмам пищи:`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Завтрак: ~ ${breakfast} ккал`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Обед: ~ ${lunch} ккал`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Ужин: ~ ${dinner} ккал`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Перекусы: ~ ${snacks} ккал`</p>
+<p class="p1"><span class="Apple-converted-space">      </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (userType === "patient") {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>lines.push("", "Для пациентов: используем эти числа только внутри вашей индивидуальной программы.");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>resultTextEl.innerHTML = lines.join("&lt;br&gt;");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>resultEl.style.display = "block";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const profile = {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>userType,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>gender,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>age,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>height,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>weight,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>activity,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>goal,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>intensity</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>saveProfile(profile);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>lastDailyData = {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>...profile,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>bmr: Math.round(bmr),</p>
+<p class="p1"><span class="Apple-converted-space">        </span>maintenance: roundedMaintenance,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>target: roundedTarget,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>protein,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>fats,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>carbs,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>meals: { breakfast, lunch, dinner, snacks }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// пересчитаем рекомендации (если пациент)</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (userType === "patient" &amp;&amp; hasSubscription) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>lastRecsData = buildRecs(lastDailyData);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>fillRecs(lastRecsData);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>return lastDailyData;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>calcBtn.addEventListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const data = calcDaily();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!data || !tg) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.setText("Отправить суточную норму боту");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.show();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>mainAction = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tg.sendData(JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">          </span>type: "calorie_result_daily",</p>
+<p class="p1"><span class="Apple-converted-space">          </span>user,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>hasSubscription,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>data</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tg.close();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- калькулятор блюда ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function calcMeal() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>mealErrorEl.style.display = "none";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>mealResultEl.style.display = "none";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const name = (mealNameEl.value || "").trim() || "Блюдо";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const kcal100 = validateNumber(mealKcal100El, 10, 1200);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const weight<span class="Apple-converted-space">  </span>= validateNumber(mealWeightEl, 10, 2000);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!kcal100 || !weight) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mealErrorEl.textContent = "Введите корректные значения ккал на 100 г и веса порции.";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mealErrorEl.style.display = "block";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const totalKcal = Math.round((kcal100 * weight) / 100);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>mealResultTextEl.innerHTML =</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`${name}: ~ ${totalKcal} ккал&lt;br&gt;` +</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`(из расчёта ${kcal100} ккал на 100 г и ${weight} г порции)`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>mealResultEl.style.display = "block";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>name,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>kcal_per_100g: kcal100,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>weight_g: weight,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>total_kcal: totalKcal</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>mealBtn.addEventListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const data = calcMeal();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!data || !tg) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.setText("Отправить блюдо боту");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.show();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>mainAction = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tg.sendData(JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">          </span>type: "calorie_result_meal",</p>
+<p class="p1"><span class="Apple-converted-space">          </span>user,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>hasSubscription,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>data</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tg.close();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- рекомендации: вода, шаги, сон ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function buildRecs(d) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!d) return null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const w = d.weight;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const activity = d.activity;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const age = d.age;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const waterMin = Math.round((w * 30) / 100) / 10; // л</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const waterMax = Math.round((w * 35) / 100) / 10;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>let stepsFrom, stepsTo;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (activity &lt;= 1.2) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stepsFrom = 6000; stepsTo = 8000;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else if (activity &lt;= 1.55) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stepsFrom = 8000; stepsTo = 10000;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stepsFrom = 10000; stepsTo = 12000;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>let sleepFrom = 7, sleepTo = 9;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (age &gt;= 40) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sleepFrom = 7; sleepTo = 8;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>waterMin,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>waterMax,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stepsFrom,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stepsTo,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sleepFrom,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sleepTo,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>kcalTarget: d.target,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>protein: d.protein,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>fats: d.fats,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>carbs: d.carbs</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function fillRecs(r) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!r) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const lines = [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Калорийность по плану: ~ ${r.kcalTarget} ккал/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>"",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Вода: ~ ${r.waterMin}–${r.waterMax} л/день (без учёта противопоказаний)`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Шаги: ~ ${r.stepsFrom.toLocaleString("ru-RU")}–${r.stepsTo.toLocaleString("ru-RU")} шагов/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Сон: ~ ${r.sleepFrom}–${r.sleepTo} ч/ночь`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>"",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`Опорные макросы:`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Белки: ~ ${r.protein} г/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Жиры: ~ ${r.fats} г/день`,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`• Углеводы: ~ ${r.carbs} г/день`</p>
+<p class="p1"><span class="Apple-converted-space">      </span>];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>recsTextEl.innerHTML = lines.join("&lt;br&gt;");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// показываем/прячем блок рекомендаций при открытии вкладки</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function updateRecsVisibility() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const isPatient = userTypeEl.value === "patient";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (isPatient &amp;&amp; hasSubscription) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>recsLockedEl.style.display = "none";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>recsContentEl.style.display = "block";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (lastDailyData &amp;&amp; !lastRecsData) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>lastRecsData = buildRecs(lastDailyData);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (lastRecsData) fillRecs(lastRecsData);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>recsLockedEl.style.display = "block";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>recsContentEl.style.display = "none";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>userTypeEl.addEventListener("change", updateRecsVisibility);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// при первом заходе на вкладку "Рекомендации"</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.querySelector('[data-screen="recs"]').addEventListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>updateRecsVisibility();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// ---------- карточка для сторис ----------</p>
+<p class="p1"><span class="Apple-converted-space">    </span>storyBtn.addEventListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!lastDailyData) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("Сначала рассчитайте суточную норму на вкладке «Суточная норма».");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!lastRecsData) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>lastRecsData = buildRecs(lastDailyData);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const r = lastRecsData;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!r) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const canvas = document.createElement("canvas");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>canvas.width = 1080;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>canvas.height = 1920;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const ctx = canvas.getContext("2d");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// фон — мягкий градиент</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>grad.addColorStop(0, "#ffe6f0");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>grad.addColorStop(1, "#f6f0ff");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillStyle = grad;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillRect(0, 0, canvas.width, canvas.height);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// карточка</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const cardX = 80;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const cardY = 260;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const cardW = canvas.width - 160;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const cardH = canvas.height - 520;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillStyle = "rgba(255,255,255,0.96)";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.shadowColor = "rgba(0,0,0,0.12)";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.shadowBlur = 30;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.shadowOffsetY = 20;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const rRad = 48;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.moveTo(cardX + rRad, cardY);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.lineTo(cardX + cardW - rRad, cardY);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.quadraticCurveTo(cardX + cardW, cardY, cardX + cardW, cardY + rRad);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.lineTo(cardX + cardW, cardY + cardH - rRad);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.quadraticCurveTo(cardX + cardW, cardY + cardH, cardX + cardW - rRad, cardY + cardH);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.lineTo(cardX + rRad, cardY + cardH);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.quadraticCurveTo(cardX, cardY + cardH, cardX, cardY + cardH - rRad);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.lineTo(cardX, cardY + rRad);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.quadraticCurveTo(cardX, cardY, cardX + rRad, cardY);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.closePath();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fill();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.shadowColor = "transparent";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillStyle = "#1f1330";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.font = "bold 56px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI'";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText("Дневные ориентиры", cardX + 60, cardY + 110);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.font = "32px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI'";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Калорийность: ~ ${r.kcalTarget} ккал`, cardX + 60, cardY + 190);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.font = "30px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI'";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Белки: ~ ${r.protein} г`, cardX + 60, cardY + 260);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Жиры: ~ ${r.fats} г`, cardX + 60, cardY + 310);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Углеводы: ~ ${r.carbs} г`, cardX + 60, cardY + 360);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Вода: ${r.waterMin}–${r.waterMax} л/день`, cardX + 60, cardY + 440);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Шаги: ${r.stepsFrom}–${r.stepsTo} в день`, cardX + 60, cardY + 490);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Сон: ${r.sleepFrom}–${r.sleepTo} ч/ночь`, cardX + 60, cardY + 540);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.font = "26px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI'";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillStyle = "#8b6cb5";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const handle = user?.username ? "@" + user.username : "devickaya";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ctx.fillText(`Персональный план от ${handle}`, cardX + 60, cardY + cardH - 80);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const dataUrl = canvas.toDataURL("image/png");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>storyPreview.src = dataUrl;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>storyPreview.style.display = "block";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (tg) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tg.MainButton.setText("Отправить карточку боту");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tg.MainButton.show();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mainAction = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>tg.sendData(JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type: "story_card",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>user,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>hasSubscription,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>daily: lastDailyData,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>recs: lastRecsData</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">          </span>tg.close();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
